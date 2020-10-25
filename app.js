@@ -1,7 +1,7 @@
 const team = []; // Engineering team, array of objects.
-const manager = require("./lib/Manager");
-const engineer = require("./lib/Engineer");
-const intern = require("./lib/Intern");
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 // const {prompt} = inquirer;
 const path = require("path");
@@ -64,7 +64,7 @@ function createManager(){
         name: "name",
         message: "Please enter the Manager's Name",
         validate: (input) => {
-          (typeof (input) !== "string") ?  "Please enter a valid name." : true;
+          return (typeof input === "string" ?  true: "Please enter a valid name.");
         }
       },
       {
@@ -72,8 +72,8 @@ function createManager(){
         name: "id",
         message: "Please enter the Manager's ID number",
         validate: (input) => {
-          ( parseInt(input, 10) > 0) ? true: "Please enter a valid ID number"
-        }
+          return ( parseInt(input, 10) > 0 && !isNaN(input) ? true: "Please enter a valid ID number");
+        },
       },
       {
         type: "input",
@@ -81,16 +81,16 @@ function createManager(){
         message: "Please enter the Manager's email address",
         validate: (input) => {
           const validEmailFormat = input.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
-          (validEmailFormat) ?  true : "Please enter a valid email address"
+          return (validEmailFormat ?  true : "Please enter a valid email address");
         
-         },
+        },
       },    
       { 
         type: "input",
         name: "officeNumber",
         message: "Please enter the manager's office number?",
         validate: (input) => {
-          (parseInt(input) > 0) ? true : "Please enter a valid office number"
+          return (parseInt(input, 10) > 0 && !isNaN(input) ? true : "Please enter a valid office number");
         }
       },
     ])
