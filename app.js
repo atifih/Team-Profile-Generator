@@ -13,10 +13,11 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 const { Console } = require("console");
 
-let hasManager = false; // Does the Engineering team have a manager assigned to it?
+let managerAssigned  = false; // Does the Engineering team have a manager assigned to it?
 let outputFolderExists = false; // Track whether the output folder exists or not.
+let teamComplete = false; // Track when the Engineering team has been fully specified.
 
-// Write code to use inquirer to gather information about the development team members,
+// Write code to use inquirer to gather information about the development team m
 // and to create objects for each team member (using the correct classes as blueprints!)
 
 // After the user has input all employees desired, call the `render` function (required
@@ -54,337 +55,155 @@ function writeHTMLFile(){
     fs.writeFileSync(outputPath, render(team), "utf-8");
   }
 } 
-   
-
-
-
+ 
 function createManager(){
-
-      // Declare function as asynchronous, and save the done callback
-   
-    
-    
-      
-      inquirer.prompt([
-    { /*
+  inquirer.prompt([
+      { 
+     
         type: "input",
         name: "name",
         message: "Please enter the Manager's Name",
-        /*
-        validate: function(input) {
-
-         // Declare function as asynchronous, and save the done callback
-          var done = this.async();
-        // Do async stuff
-        setTimeout(function() {
-        if (typeof input !== "string") {
-        // Pass the return value in the done callback
-        done("Please enter a string ( a sequence  of characters for the Manager's name)");
-        return;
+        validate: (input) => {
+          (typeof (input) !== "string") ?  "Please enter a valid name." : true;
         }
-        // Pass the return value in the done callback
-        done(true);
-        }, 3000);
-         }
-     
-   },
-{
-      type: "input",
-      name: "id",
-      message: "Please enter the Manager's ID number",
-      validate: function(input) {
-
-        
-
-       // Do async stuff
-        setTimeout(function() {
-         if (typeof input !== "number") {
-         // Pass the return value in the done callback
-          done("Please enter a  number  for the Manager's ID)");
-          return;
-         }
-          // Pass the return value in the done callback
-        done(true);
-        }, 3000);
-      }
-    },
-    {
-      type: "input",
-      name: "email",
-      message: "Please enter the Manager's email address",
-      validate: function(input) {
-      // regular expression for validating a valid email address.
-      const  mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-      // Do async stuff
-      setTimeout(function() {
-      if (!input.match(mailformat)) {
-        // Pass the return value in the done callback
-        done("Please enter a  valid email address for the Manager.)");
-        return;
-      }
-      // Pass the return value in the done callback
-      done(true);
-      }, 3000);
-    },
-    },
-    {
-      type: "input",
-      message: "Please enter the manager's office number?",
-      name: "officeNumber",
-      validate: function(input) {
-
-      // Do async stuff
-        setTimeout(function() {
-        if (input !== "number") {
-        // Pass the return value in the done callback
-          done("Please enter a  number for the Manager's office number.");
-          return;
-        }
-       // Pass the return value in the done callback
-        done(true);
-    }, 3000);
-      } 
-  },
-
-
-  
-  ]), (answers) => {
-      // Now that we possess the Manager's details, let's add their details to the Engineering team array.
-      const manager = new Manager(this.name, this.id, this.email, this.officeNumber);
-      team.push(manager);
-      hasManager = true; // Does the Engineering team been assigned a Manager?
-
-      // Debug output.
-      console.log("The manager object has been created successfully.");
-
-      console.log("--------------------createManager() -----")
-      console.log("The manager has: \n" + manager.name +"\n"); 
-      console.log("The manager has: \n" + manager.id +"\n"); 
-      console.log("The manager has: \n" + manager.email +"\n"); 
-      console.log("The manager has: \n" + manager.officeNumber + "\n"); 
-
-      (hasManager) ? createTeam() : createManager();
-
-
-    }
-}
-*/
-
-  
-        type: "input",
-        name: "name",
-        message: "Enter the Manager's Name",
       },
       {
         type: "input",
         name: "id",
-        message: "Enter the Manager's ID number",
+        message: "Please enter the Manager's ID number",
+        validate: (input) => {
+          ( parseInt(input, 10) > 0) ? true: "Please enter a valid ID number"
+        }
       },
       {
         type: "input",
         name: "email",
-        message: "Enter the Manager's email address",
-      },
-      {
+        message: "Please enter the Manager's email address",
+        validate: (input) => {
+          const validEmailFormat = input.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+          (validEmailFormat) ?  true : "Please enter a valid email address"
+        
+         },
+      },    
+      { 
         type: "input",
-        message: "What is the manager's office number?",
         name: "officeNumber",
+        message: "Please enter the manager's office number?",
+        validate: (input) => {
+          (parseInt(input) > 0) ? true : "Please enter a valid office number"
+        }
       },
     ])
-    .then((answers) => {
+    .then ((answers) => {
+      // Create a new manager object.
       const manager = new Manager(
         answers.name,
         answers.id,
         answers.email,
-        answers.officeNumber
-      );
-      team.push(manager);
-      console.log("Created the Manager - let's now add team members.");
-      createTeam();
+        answers.officeNumber);
+        team.push(manager); // push the manager object  into the team array.
+        return;
     });
-  };
+  }
+
 function createEngineer(){
-// Declare function as asynchronous, and save the done callback
-    const  done = this.async();
-    inquirer.prompt([
-    { 
+    inquirer
+    .prompt([
+      { 
         type: "input",
-        name: "name",
-        message: "Please enter the Engineer's  Name",
-        validate: function(input) {
-
-        // Do async stuff
-        setTimeout(function() {
-        if (typeof input !== "string") {
-        // Pass the return value in the done callback
-        done("Please enter a string ( a sequence  of characters for the Engineer's name)");
-        return;
-        }
-        // Pass the return value in the done callback
-        done(true);
-        }, 3000);
-        }
-   },
-{
-      type: "input",
-      name: "id",
-      message: "Please enter the Engineer's ID number",
-      validate: function(input) {
-
-      // Do async stuff
-        setTimeout(function() {
-         if (typeof input !== "number") {
-         // Pass the return value in the done callback
-          done("Please enter a  number  for the Engineers's ID)");
-          return;
-         }
-          // Pass the return value in the done callback
-        done(true);
-        }, 3000);
-      }
-    },
-    {
-      type: "input",
-      name: "email",
-      message: "Please enter the Engineer's email address",
-      validate: function(input) {
+         name: "name",
+        message: "Please enter the Engineer's Name",
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "Please enter the Engineer's ID number",
+        validate: (input) => {
+          (parseInt(input, 10) > 0)
+            ? true
+            : "Please enter a valid number"
+      },
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "Please enter the Engineer's email address",
+        validate: (input) => {
+          
       // regular expression for validating a valid email address.
-      const  mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-      // Do async stuff
-      setTimeout(function() {
-      if (!input.match(mailformat)) {
-        // Pass the return value in the done callback
-        done("Please enter a  valid email address for the Engineer.)");
-        return;
-      }
-      // Pass the return value in the done callback
-      done(true);
-      }, 3000);
-    },
-    },
-    {
-      type: "input",
-      message: "Please enter the Engineers's github username?",
-      name: "github",
-      validate: function(input) {
-
-      // Do async stuff
-        setTimeout(function() {
-        if (input !== "string") {
-        // Pass the return value in the done callback
-          done("Please enter a  string for the Engineer's github username.");
-          return;
-        }
-       // Pass the return value in the done callback
-        done(true);
-    }, 3000);
-      } 
-  },
-
-
-  
-  ]), (answers) => {
-      // Now that we posses the Engineer's details, let's add their details to the Engineering team array.
-      const engineer = new Manager(this.name, this.id, this.email, this.github);
+      const  emailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+           (input.match(emailFormat)) ? true : "Invalid email address"
+          },
+      },
+      {
+        type: "input",
+        message: "What is the Engineer's GitHub username?",
+        name: "github",
+        validate: (input) => {
+          (typeof input === "string") ? true : "Please enter a valid GitHub username"
+        },
+      },
+    ])
+    .then((answers) => {
+      const engineer = new Engineer(
+        answers.name,
+        answers.id,
+        answers.email,
+        answers.github
+      );
       team.push(engineer);
-      
-
-      // Debug output.
+       // Debug output.
       console.log("The engineer object has been created successfully.");
 
-      console.log("--------------------createEngineer() -----")
+      console.log("--------------------createEngineer() -----");
       console.log("The engineer has: \n" + engineer.name +"\n"); 
       console.log("The engineer has: \n" + engineer.id +"\n"); 
       console.log("The engineer has: \n" + engineer.email +"\n"); 
       console.log("The engineer has: \n" + engineer.github + "\n"); 
 
-    }
-  }
-  
-``
-  
+    })
+}
 
 function createIntern(){
-     prompt([
-        {
-        type: "input",   // Question 1.
+    inquirer
+    .prompt([
+      {
+        type: "input",
         name: "name",
-        message: "Please enter the Intern's Name",
-        validate: function(input) {
-
-        // Do async stuff
-        setTimeout(function() {
-        if (typeof input !== "string") {
-        // Pass the return value in the done callback
-        done("Please enter a string ( a sequence  of characters for the Intern's name)");
-        return;
-        }
-        // Pass the return value in the done callback
-        done(true);
-        }, 3000);
-        }  
-        },
-        {
-        type: "input",    // Question 2.
-        name: "id",
-        message: "Enter the Intern's ID number",
-        validate: function(input) {
-
-      // Do async stuff
-        setTimeout(function() {
-         if (typeof input !== "number") {
-         // Pass the return value in the done callback
-          done("Please enter a  number  for the Intern's ID");
-          return;
-         }
-          // Pass the return value in the done callback
-        done(true);
-        }, 3000);
-        },
-        },
-      {
-        type: "input", // Question 3.
-        name: "email",
-        message: "Enter the Intern's email address",
-        validate: function(input) {
-      // regular expression for validating a valid email address.
-      const  mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-      // Do async stuff
-      setTimeout(function() {
-      if (!input.match(mailformat)) {
-        // Pass the return value in the done callback
-        done("Please enter a  valid email address for the Intern.)");
-        return;
-      }
-      // Pass the return value in the done callback
-      done(true);
-      }, 3000);
+        message: "Please enter  the Intern's Name",
       },
-    },
       {
-        type: "input",   // Question 4.
-        message: "Which school is the intern from?",
+        type: "input",
+        name: "id",
+        message: "Please enter the Intern's ID number",
+        validate: (input) =>
+          Number.isInteger(Number(input)) && Number(input) > 0
+            ? true
+            : "Please enter a valid number",
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "Please enter the Intern's email address",
+        validate: (input) =>
+          /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(input)
+            ? true
+            : "Please enter a valid email address",
+      },
+      {
+        type: "input",
         name: "school",
-        validate: function(input) {
-
-        // Do async stuff
-        setTimeout(function() {
-        if (typeof input !== "string") {
-        // Pass the return value in the done callback
-        done("Please enter a string ( a sequence  of characters for the Intern's school)");
-        return;
-        }
-        // Pass the return value in the done callback
-        done(true);
-        }, 3000);
-        },
-     }
-    ]), (answers) => {
-      // Now that we posses the Engineer's details, let's add their details to the Engineering team array.
-      const intern = new Intern(this.name, this.id, this.email, this.school);
+        message: "Which school is the intern from?",
+      },
+    ])
+    .then((answers) => {
+      const intern = new Intern(
+        answers.name,
+        answers.id,
+        answers.email,
+        answers.school
+      );
       team.push(intern);
-      
-
       // Debug output.
       console.log("The engineer object has been created successfully.");
 
@@ -394,14 +213,15 @@ function createIntern(){
       console.log("The intern has: \n" + intern.email +"\n"); 
       console.log("The intern has: \n" + intern.school + "\n"); 
 
-    }
+    })
   }
-  
+ 
 
 function createTeam(){
-  console.log("Create Team");
-inquirer.prompt([
-  // Passing the questions in here.
+inquirer
+.prompt([
+  
+  // Setting up the Questions Array.
    {   
        type: "list",
        name: "role",
@@ -410,7 +230,8 @@ inquirer.prompt([
        default: "Manager"
    }
    
-]), (answers) => {
+
+   ]).then((answers) => {
     // Use user feedback for... whatever!!  
     switch (answers.role) {
       case "Manager": createManager();
@@ -424,9 +245,11 @@ inquirer.prompt([
                             break;
       default: return;
     }
-  }
+  })
 }
+      
 // Invoke the application.
-
 createTeam();
     
+
+
