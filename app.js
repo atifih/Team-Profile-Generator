@@ -3,12 +3,12 @@ const manager = require("./lib/Manager");
 const engineer = require("./lib/Engineer");
 const intern = require("./lib/Intern");
 const inquirer = require("inquirer");
-const {prompt} = inquirer;
+// const {prompt} = inquirer;
 const path = require("path");
 const fs = require("fs");
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
-const outputPath = path.joins(OUTPUT_DIR, "team.html");
+const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 const { Console } = require("console");
@@ -42,15 +42,16 @@ let outputFolderExists = false; // Track whether the output folder exists or not
 function writeHTMLFile(){
   // check if the `output` folder exists and create it if it
   // does not.
-    if (outputFolderExists){
-      fs.writeFileSync(outputPath, render(team), "utf-8"); 
-    }else {
+    if (!outputFolderExists){
       fs.mkdir(path.join(__dirname, 'output'), (err) => { 
       if (err) { 
         return console.error(err); 
         } 
       console.log('Directory created successfully!'); 
+    outputFolderExists = true;
+
     }) 
+    fs.writeFileSync(outputPath, render(team), "utf-8");
   }
 } 
    
@@ -60,16 +61,20 @@ function writeHTMLFile(){
 function createManager(){
 
       // Declare function as asynchronous, and save the done callback
-    const  done = this.async();
-    prompt([
-    { 
+   
+    
+    
+      
+      inquirer.prompt([
+    { /*
         type: "input",
         name: "name",
         message: "Please enter the Manager's Name",
+        /*
         validate: function(input) {
 
          // Declare function as asynchronous, and save the done callback
-
+          var done = this.async();
         // Do async stuff
         setTimeout(function() {
         if (typeof input !== "string") {
@@ -81,6 +86,7 @@ function createManager(){
         done(true);
         }, 3000);
          }
+     
    },
 {
       type: "input",
@@ -143,7 +149,7 @@ function createManager(){
 
   
   ]), (answers) => {
-      // Now that we posses the Manager's details, let's add their details to the Engineering team array.
+      // Now that we possess the Manager's details, let's add their details to the Engineering team array.
       const manager = new Manager(this.name, this.id, this.email, this.officeNumber);
       team.push(manager);
       hasManager = true; // Does the Engineering team been assigned a Manager?
@@ -162,11 +168,45 @@ function createManager(){
 
     }
 }
+*/
 
+  
+        type: "input",
+        name: "name",
+        message: "Enter the Manager's Name",
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "Enter the Manager's ID number",
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "Enter the Manager's email address",
+      },
+      {
+        type: "input",
+        message: "What is the manager's office number?",
+        name: "officeNumber",
+      },
+    ])
+    .then((answers) => {
+      const manager = new Manager(
+        answers.name,
+        answers.id,
+        answers.email,
+        answers.officeNumber
+      );
+      team.push(manager);
+      console.log("Created the Manager - let's now add team members.");
+      createTeam();
+    });
+  };
 function createEngineer(){
 // Declare function as asynchronous, and save the done callback
     const  done = this.async();
-    prompt([
+    inquirer.prompt([
     { 
         type: "input",
         name: "name",
@@ -261,7 +301,7 @@ function createEngineer(){
     }
   }
   
-
+``
   
 
 function createIntern(){
@@ -359,19 +399,20 @@ function createIntern(){
   
 
 function createTeam(){
-prompt([
+  console.log("Create Team");
+inquirer.prompt([
   // Passing the questions in here.
    {   
        type: "list",
-       name: "Create Team",
-       message: "An engineering team consists of a manager and an arbitrary number of engineers and interns. To proceed with creating an engineeering team, Please select who you would like to create?",
+       name: "role",
+       message: "An engineering team consists of a manager and an arbitrary number of engineers and interns. To proceed with creating an engineeering team, kindly select the team member you would like to create or 'Team complete'.",
        choices: ["Manager", "Engineer", "Intern", "Team complete"],
-       default: "Manager",
+       default: "Manager"
    }
    
 ]), (answers) => {
     // Use user feedback for... whatever!!  
-    switch (answers.choices) {
+    switch (answers.role) {
       case "Manager": createManager();
         break;
       case "Engineer": createEngineer();
@@ -387,4 +428,5 @@ prompt([
 }
 // Invoke the application.
 
-
+createTeam();
+    
