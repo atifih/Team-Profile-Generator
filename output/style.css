@@ -1,0 +1,31 @@
+.team-heading{
+    background: content-box radial-gradient();
+    color: darkgoldenrod;
+}
+
+body{
+    background-image: url(../images/background.jpeg);
+}
+
+.manager-header {
+    background: #7e0804;
+    color: beige;
+    border: black;
+    border-width: 3px;
+}
+
+.engineer-header {
+
+  background: #1e6e68;
+  color: beige;
+  border: black;
+  border-width: 3px;
+}
+
+.intern-header {
+
+  background: #6e5258;
+  color: beige;
+  border: black;
+  border-width: 3px;
+}
