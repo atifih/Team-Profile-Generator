@@ -15,6 +15,7 @@ const { Console } = require("console");
 
 let managerAssigned  = false; // Does the Engineering team have a manager assigned to it?
 let outputFolderExists = false; // Track whether the output folder exists or not.
+let fileExists = false; // Track whether an team.html file already exists.
 let teamComplete = false; // Track when the Engineering team has been fully specified.
 
 // Write code to use inquirer to gather information about the development team m
@@ -49,17 +50,25 @@ function writeHTMLFile(){
         return console.error(err); 
         } 
       console.log('Directory created successfully!'); 
-    outputFolderExists = true;
+      outputFolderExists = true;
 
-    }) 
-    fs.writeFileSync(outputPath, render(team), "utf-8");
-  }
+    })
+  } 
+    // Write to  html file within the 'output' folder.
+    if (teamComplete){
+      if (!fileExists){
+        fs.writeFileSync(outputPath, render(team), "utf-8"), (err)=>{
+        if (err) {
+          return console.error(err);
+        }
+      }
+      }
+    }
+      return  console.log("Engineering team has not been  fully selected!");
+    
+   
 } 
-/*
-function validateName(input){
-  return (typeof (input) === "string" ?  true: "Please enter a valid name.");
-}
-*/
+
  
 function createManager(){
   inquirer.prompt([
@@ -109,7 +118,7 @@ function createManager(){
         answers.email,
         answers.officeNumber);
         team.push(manager); // push the manager object  into the team array.
-        return;
+        createTeam(); // Back to 'menu'
     })
   }
 
@@ -164,7 +173,7 @@ function createEngineer(){
         answers.github
       );
       team.push(engineer);
-     
+      createTeam(); // Back to 'menu'
     })
 }
 
@@ -220,7 +229,7 @@ function createIntern(){
         answers.school
       );
       team.push(intern);
-      return;
+      createTeam(); // Back to 'menu'
     })
   }
  
@@ -240,21 +249,31 @@ inquirer
    
 
    ]).then((answers) => {
-    // Use user feedback for... whatever!!  
+    // Using the  user feedback generate an array of 'Engineering Team' objects.
+
     switch (answers.role) {
-      case "Manager": createManager();
-        break;
-      case "Engineer": createEngineer();
-        break;
-      case "Intern": createIntern();
-        break;
-      case "Team complete": // Done! The engineering team has been chosen.
-                            writeHTMLFile();
-                            break;
-      default: return;
-    }
-  })
-}
+          case "Manager":       if (!teamComplete){
+                                createManager();
+                                }
+                                break;
+          case "Engineer":      if (!teamComplete){
+                                createEngineer();
+                                }
+                                break;
+          case "Intern":        if (!teamComplete){
+                                  createIntern();
+                                }
+                                break; 
+          case "Team complete": // Done! The engineering team has been chosen.
+                                teamComplete = true;
+                                 writeHTMLFile();
+                                break;
+          default:              return;
+        }
+    });
+    
+  }
+
       
 // Invoke the application.
 createTeam();
