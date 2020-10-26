@@ -175,29 +175,41 @@ function createIntern(){
         type: "input",
         name: "name",
         message: "Please enter  the Intern's Name",
+        validate: (input) => {
+          const validNameFormat = input.match(/^[a-z]+$/i); // Currently name should be alphabetic only.
+          return (validNameFormat ?  true : "Please enter a valid Intern's name");
+          
+        }
       },
       {
         type: "input",
         name: "id",
         message: "Please enter the Intern's ID number",
-        validate: (input) =>
-          Number.isInteger(Number(input)) && Number(input) > 0
+         validate: (input) => {
+         return  (parseInt(input, 10) > 0 && !isNaN(input)
             ? true
-            : "Please enter a valid number",
+            : "Please enter a valid Intern's ID");
+          },
       },
       {
         type: "input",
         name: "email",
         message: "Please enter the Intern's email address",
-        validate: (input) =>
-          /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(input)
-            ? true
-            : "Please enter a valid email address",
+        validate: (input) => {
+        // regular expression for validating a valid email address.
+      const  emailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+           return (input.match(emailFormat) ? true : "Invalid email address");
+          },
       },
       {
         type: "input",
         name: "school",
         message: "Which school is the intern from?",
+        validate: (input) => {
+          const validNameFormat = input.match(/^[a-z]+$/i); // Currently name should be alphabetic only.
+          return (validNameFormat ?  true : "Please enter a valid school name");
+          
+        }
       },
     ])
     .then((answers) => {
@@ -208,15 +220,7 @@ function createIntern(){
         answers.school
       );
       team.push(intern);
-      // Debug output.
-      console.log("The engineer object has been created successfully.");
-
-      console.log("--------------------createIntern() -----")
-      console.log("The intern has: \n" + intern.name +"\n"); 
-      console.log("The intern has: \n" + intern.id +"\n"); 
-      console.log("The intern has: \n" + intern.email +"\n"); 
-      console.log("The intern has: \n" + intern.school + "\n"); 
-
+      return;
     })
   }
  
