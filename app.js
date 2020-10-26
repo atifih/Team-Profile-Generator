@@ -3,7 +3,6 @@ const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
-// const {prompt} = inquirer;
 const path = require("path");
 const fs = require("fs");
 
@@ -13,8 +12,13 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 const { Console } = require("console");
 
-let managerAssigned  = false; // Does the Engineering team have a manager assigned to it?
-let outputFolderExists = false; // Track whether the output folder exists or not.
+const validNameRegEx = /^[a-zA-Z '.-]*$/; // RegEx for name validation (English)
+const validEmailRegEx = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/; // RegEx for email validation. 
+const validGitHubRegEx = (/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i);  // RegEx for GitHub username.
+
+
+
+// let managerAssigned  = false; // Does the Engineering team have a manager assigned to it?
 let fileExists = false; // Track whether an team.html file already exists.
 let teamComplete = false; // Track when the Engineering team has been fully specified.
 
@@ -42,73 +46,42 @@ let teamComplete = false; // Track when the Engineering team has been fully spec
 //[] for the provided `render` function to work! ```
 
 function writeHTMLFile(){
-  // check if the `output` folder exists and create it if it
-  // does not.
-    if (!outputFolderExists){
-      fs.mkdir(path.join(__dirname, 'output'), (err) => { 
-      if (err) { 
-        return console.error(err); 
-        } 
-      console.log('Directory created successfully!'); 
-      outputFolderExists = true;
-
-    })
-  } 
+  
     // Write to  html file within the 'output' folder.
-    if (teamComplete){
+
       if (!fileExists){
-        fs.writeFileSync(outputPath, render(team), "utf-8"), (err)=>{
-        if (err) {
-          return console.error(err);
+        fs.writeFileSync(outputPath, render(team), "utf-8"), (err) => (err) ? console.error(err) : console.log("The HTML output file: team.html has been written successfully to the 'output' folder");
         }
-      }
-      }
-    }
-      return  console.log("Engineering team has not been  fully selected!");
-    
-   
+      return;  
 } 
 
- 
-function createManager(){
+ function createManager(){
   inquirer.prompt([
       { 
      
         type: "input",
         name: "name",
         message: "Please enter the Manager's Name",
-        validate: (input) => {
-          const validNameFormat = input.match(/^[a-z]+$/i); // Currently name should be alphabetic only.
-          return (validNameFormat ?  true : "Please enter a valid Manager's name");
-          
-        }
+        validate: (input) => (input.match(validNameRegEx)) ? true : "Please enter a valid Manager's name"
       },
       {
         type: "input",
         name: "id",
         message: "Please enter the Manager's ID number",
-        validate: (input) => {
-          return ( parseInt(input, 10) > 0 && !isNaN(input) ? true: "Please enter a valid Manager's ID number");
-        },
+        validate: (input) => (parseInt(input, 10) > 0 && !isNaN(input)) ? true: "Please enter a valid Manager's ID number" // Valid ID Number = counting number (postive integer)
       },
       {
         type: "input",
         name: "email",
         message: "Please enter the Manager's email address",
-        validate: (input) => {
-          const validEmailFormat = input.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
-          return (validEmailFormat ?  true : "Please enter a valid Manager's email address");
-        
-        },
+        validate: (input) => (input.match(validEmailRegEx)) ? true : "Please enter a valid Manager's email address"
       },    
       { 
         type: "input",
         name: "officeNumber",
         message: "Please enter the manager's office number?",
-        validate: (input) => {
-          return (parseInt(input, 10) > 0 && !isNaN(input) ? true : "Please enter a valid Manager's office number");
-        }
-      },
+        validate: (input) => (parseInt(input, 10) > 0 && !isNaN(input)) ? true : "Please enter a valid Manager's office number"
+      }
     ])
     .then ((answers) => {
       // Create a new manager object.
@@ -129,40 +102,25 @@ function createEngineer(){
         type: "input",
          name: "name",
         message: "Please enter the Engineer's Name",
-        validate: (input) => {
-          const validNameFormat = input.match(/^[a-z]+$/i); // Currently name should be alphabetic only.
-          return (validNameFormat ?  true : "Please enter a valid Engineer's name");
-      },
+        validate: (input) => (input.match(validNameRegEx)) ?  true : "Please enter a valid Engineer's name"
       },
       {
         type: "input",
         name: "id",
         message: "Please enter the Engineer's ID number",
-        validate: (input) => {
-         return  (parseInt(input, 10) > 0 && !isNaN(input)
-            ? true
-            : "Please enter a valid Engineer's ID");
-      },
+        validate: (input) => (parseInt(input, 10) > 0 && !isNaN(input))? true : "Please enter a valid Engineer's ID"
       },
       {
         type: "input",
         name: "email",
         message: "Please enter the Engineer's email address",
-        validate: (input) => {
-          
-      // regular expression for validating a valid email address.
-      const  emailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-           return (input.match(emailFormat) ? true : "Invalid email address");
-          },
+        validate: (input) => (input.match(validEmailRegEx)) ? true : "Invalid email address"
       },
       {
         type: "input",
         message: "What is the Engineer's GitHub username?",
         name: "github",
-        validate: (input) => {
-          const validGitHubFormat = /^[a-z0-9]+$/i // valid GitHub username  is alphanumeric 
-          return  (input.match(validGitHubFormat) ? true : "Please enter a valid GitHub username");
-        }, 
+        validate: (input) => (input.match(validGitHubRegEx)) ? true : "Please enter a valid GitHub username"
       },
     ])
     .then((answers) => {
@@ -184,41 +142,25 @@ function createIntern(){
         type: "input",
         name: "name",
         message: "Please enter  the Intern's Name",
-        validate: (input) => {
-          const validNameFormat = input.match(/^[a-z]+$/i); // Currently name should be alphabetic only.
-          return (validNameFormat ?  true : "Please enter a valid Intern's name");
-          
-        }
+        validate: (input) => (input.match(validNameRegEx)) ?  true : "Please enter a valid Intern's name"
       },
       {
         type: "input",
         name: "id",
         message: "Please enter the Intern's ID number",
-         validate: (input) => {
-         return  (parseInt(input, 10) > 0 && !isNaN(input)
-            ? true
-            : "Please enter a valid Intern's ID");
-          },
+         validate: (input) => (parseInt(input, 10) > 0 && !isNaN(input)) ? true : "Please enter a valid Intern's ID"
       },
       {
         type: "input",
         name: "email",
         message: "Please enter the Intern's email address",
-        validate: (input) => {
-        // regular expression for validating a valid email address.
-      const  emailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-           return (input.match(emailFormat) ? true : "Invalid email address");
-          },
-      },
+        validate: (input) => (input.match(validEmailRegEx)) ? true : "Invalid email address"
+       },
       {
         type: "input",
         name: "school",
         message: "Which school is the intern from?",
-        validate: (input) => {
-          const validNameFormat = input.match(/^[a-z]+$/i); // Currently name should be alphabetic only.
-          return (validNameFormat ?  true : "Please enter a valid school name");
-          
-        }
+        validate: (input) => (input.match(validNameRegEx)) ?  true : "Please enter a valid school name"
       },
     ])
     .then((answers) => {
@@ -247,9 +189,8 @@ inquirer
        default: "Manager"
    }
    
-
-   ]).then((answers) => {
-    // Using the  user feedback generate an array of 'Engineering Team' objects.
+  ]).then((answers) => {
+    // Using the  user feedback to  generate an array of 'Engineering Team' objects.
 
     switch (answers.role) {
           case "Manager":       if (!teamComplete){
@@ -275,8 +216,5 @@ inquirer
   }
 
       
-// Invoke the application.
+// Invoke the application, Prompt the user to select Engineering Team members to view information about.
 createTeam();
-    
-
-
