@@ -55,6 +55,11 @@ function writeHTMLFile(){
     fs.writeFileSync(outputPath, render(team), "utf-8");
   }
 } 
+/*
+function validateName(input){
+  return (typeof (input) === "string" ?  true: "Please enter a valid name.");
+}
+*/
  
 function createManager(){
   inquirer.prompt([
@@ -64,7 +69,9 @@ function createManager(){
         name: "name",
         message: "Please enter the Manager's Name",
         validate: (input) => {
-          return (typeof input === "string" ?  true: "Please enter a valid name.");
+          const validNameFormat = input.match(/^[a-z]+$/i); // Currently name should be alphabetic only.
+          return (validNameFormat ?  true : "Please enter a valid Manager's name");
+          
         }
       },
       {
@@ -72,7 +79,7 @@ function createManager(){
         name: "id",
         message: "Please enter the Manager's ID number",
         validate: (input) => {
-          return ( parseInt(input, 10) > 0 && !isNaN(input) ? true: "Please enter a valid ID number");
+          return ( parseInt(input, 10) > 0 && !isNaN(input) ? true: "Please enter a valid Manager's ID number");
         },
       },
       {
@@ -81,7 +88,7 @@ function createManager(){
         message: "Please enter the Manager's email address",
         validate: (input) => {
           const validEmailFormat = input.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
-          return (validEmailFormat ?  true : "Please enter a valid email address");
+          return (validEmailFormat ?  true : "Please enter a valid Manager's email address");
         
         },
       },    
@@ -90,7 +97,7 @@ function createManager(){
         name: "officeNumber",
         message: "Please enter the manager's office number?",
         validate: (input) => {
-          return (parseInt(input, 10) > 0 && !isNaN(input) ? true : "Please enter a valid office number");
+          return (parseInt(input, 10) > 0 && !isNaN(input) ? true : "Please enter a valid Manager's office number");
         }
       },
     ])
@@ -103,7 +110,7 @@ function createManager(){
         answers.officeNumber);
         team.push(manager); // push the manager object  into the team array.
         return;
-    });
+    })
   }
 
 function createEngineer(){
@@ -113,15 +120,19 @@ function createEngineer(){
         type: "input",
          name: "name",
         message: "Please enter the Engineer's Name",
+        validate: (input) => {
+          const validNameFormat = input.match(/^[a-z]+$/i); // Currently name should be alphabetic only.
+          return (validNameFormat ?  true : "Please enter a valid Engineer's name");
+      },
       },
       {
         type: "input",
         name: "id",
         message: "Please enter the Engineer's ID number",
         validate: (input) => {
-          (parseInt(input, 10) > 0)
+         return  (parseInt(input, 10) > 0 && !isNaN(input)
             ? true
-            : "Please enter a valid number"
+            : "Please enter a valid Engineer's ID");
       },
       },
       {
@@ -132,7 +143,7 @@ function createEngineer(){
           
       // regular expression for validating a valid email address.
       const  emailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-           (input.match(emailFormat)) ? true : "Invalid email address"
+           return (input.match(emailFormat) ? true : "Invalid email address");
           },
       },
       {
@@ -140,8 +151,9 @@ function createEngineer(){
         message: "What is the Engineer's GitHub username?",
         name: "github",
         validate: (input) => {
-          (typeof input === "string") ? true : "Please enter a valid GitHub username"
-        },
+          const validGitHubFormat = /^[a-z0-9]+$/i // valid GitHub username  is alphanumeric 
+          return  (input.match(validGitHubFormat) ? true : "Please enter a valid GitHub username");
+        }, 
       },
     ])
     .then((answers) => {
@@ -152,15 +164,7 @@ function createEngineer(){
         answers.github
       );
       team.push(engineer);
-       // Debug output.
-      console.log("The engineer object has been created successfully.");
-
-      console.log("--------------------createEngineer() -----");
-      console.log("The engineer has: \n" + engineer.name +"\n"); 
-      console.log("The engineer has: \n" + engineer.id +"\n"); 
-      console.log("The engineer has: \n" + engineer.email +"\n"); 
-      console.log("The engineer has: \n" + engineer.github + "\n"); 
-
+     
     })
 }
 
