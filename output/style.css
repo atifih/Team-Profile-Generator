@@ -1,6 +1,8 @@
 .team-heading{
-    background: content-box radial-gradient();
+    background: rgb(63, 102, 121);
     color: darkgoldenrod;
+    text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+    border-style: solid;
 }
 
 body{
@@ -10,22 +12,30 @@ body{
 .manager-header {
     background: #7e0804;
     color: beige;
-    border: black;
-    border-width: 3px;
+    text-shadow: 1px 1px 2px black, 0 0 25px white, 0 0 5px darkblue;
 }
 
 .engineer-header {
 
   background: #1e6e68;
   color: beige;
-  border: black;
-  border-width: 3px;
+  text-shadow: 1px 1px 2px black, 0 0 25px white, 0 0 5px darkblue;
 }
 
 .intern-header {
 
   background: #6e5258;
   color: beige;
-  border: black;
-  border-width: 3px;
+  text-shadow: 1px 1px 2px black, 0 0 25px white, 0 0 5px darkblue;
+ }
+
+.card-body{
+    background: wheat;
+    color: black;
+}
+
+.employee-card{
+    border-style: solid;
+    border-width: 5px;
+    box-shadow: 5px 10px black;
 }
