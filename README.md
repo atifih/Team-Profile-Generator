@@ -24,26 +24,23 @@ The application may be invoked from the command line like so:
   
 After retrieving all information relevant to generating a professional Readme file, the application will begin organzing/structuring the information under suitable headings/headers.
   
-![](images/image1.png)
+![](images/img1.png)
   
-The application begins by prompting the user for their github username, email address followed by the title of the project.
-  
-![](images/image2.png)
-  
-The application prompts installation instructions as well as sensible default options as shown in this picture with the option displayed within parenthesis.
-  
-![](images/image3.png)
-  
-The user then proceeds in the application at which point they are prompted to select the license for the application from a list of common application licenses.
-  
-![](images/image4.png)
-  
-The user is then prompted to enter the  application usage information as well as guidelines on how one may contribute towards the success of this project.
+The application begins by informing the user that they need to select an Engineering Team before they can view information about them. 
  
-![](images/image5.png)
- 
-Finally, a link to the developer's github profile coupled with links to their email address are provided, along with a status message from the application on whether the readme file was generated successfully.
+![](images/img2.png)
   
+The user then proceeds by selecting a manager, engineer, intern or team complete (when they have finished with the team selection)
+
+![](images/img3.png)
+  
+
+ 
+![](images/img4.png)
+ 
+Finally, the user informed of if a file has been successfully created (and it's location).
+
+![](images/img5.png)
 
 ## License
 MIT.
@@ -60,5 +57,5 @@ Unit tests are provided and located in the test foslder within this repository. 
 [Developer GitHub profile link](https://github.com/atifih)  
 [Developer Email link](mailto:atif.haque@gmail.com)  
 [Video demonstration of the application](https://drive.google.com/file/d/1Ebs_cqdhx2Y1BZ86jdnBwH6snvOJ7whg/view)  
-[Sample output file generated](sampleTeam.html)
+[Sample output file generated](output/sampleTeam.html)
 
