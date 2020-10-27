@@ -22,8 +22,6 @@ The application may be invoked from the command line like so:
 
 ## Usage
   
-After retrieving all information relevant to generating a professional Readme file, the application will begin organzing/structuring the information under suitable headings/headers.
-  
 ![](images/img1.png)
   
 The application begins by informing the user that they need to select an Engineering Team before they can view information about them. 
@@ -32,25 +30,21 @@ The application begins by informing the user that they need to select an Enginee
   
 The user then proceeds by selecting a manager, engineer, intern or team complete (when they have finished with the team selection)
 
-![](images/img3.png)
-  
-
+![](images/img5.png)
+Finally, the user informed of if a file has been successfully created (and it's location).
  
 ![](images/img4.png)
- 
-Finally, the user informed of if a file has been successfully created (and it's location).
-
-![](images/img5.png)
+ Rendering of the output HTML file.
 
 ## License
 MIT.
  
 ## Contributing
-All pull requests are allowed/encouraged. For developers looking to make profound changes to this project, kindly open an issue detailing proposed changes to be made so that a discussion may ensue.
+All pull requests are allowed/encouraged. For developers looking to make profound changes to this project, kindly open an issue detailing any proposed changes to be made so that a discussion may ensue.
  
 ## Tests
 Unit tests are provided and located in the test foslder within this repository. The unit tests are invoked by: 
-** npm run test **
+**npm run test**
 
 
 ## Questions
