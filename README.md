@@ -11,14 +11,10 @@
   * [Questions](#questions)
 
 ## Description
-It is important when creating open source projects on GitHub that  they posess quality README files  composed with information such as: What the app is for.   how to use the app, how to install it, how to report issues, and how other developers can lmake  contributions  to the success of the project
+I am building a Node CLI that takes in information about employees and generates an HTML webpage that displays summaries for each person. Given that testing is a key piece in facilitating  code to be  maintainable, I am ensuring that all unit tests pass.
 
-A command-line application was chosen as it will enable a quick and easy generation of a project README to get started promptly. This facilitates a project creator to spend more time on working on finishing the project and less time creating a good README.
-
-My goal here is to create a command-line application  that dynamically generates a professional README.md from user input via the Inquirer package (installable as a module to the node.js application).
-
-The application will be invoked from the command line like so:
-**node index.js**
+The application may be invoked from the command line like so:
+**node app.js**
 
 ## Installing Dependencies
  Dependencies maybe installed as follows:
@@ -56,7 +52,9 @@ MIT.
 All pull requests are allowed/encouraged. For developers looking to make profound changes to this project, kindly open an issue detailing proposed changes to be made so that a discussion may ensue.
  
 ## Tests
-None are provided at this point in time. However, a sample Readme file called: goodReadme.md is provided to illustrate the capabilities of this application.
+Unit tests are provided and located in the test foslder within this repository. The unit tests are invoked by: 
+** npm run test **
+
 
 ## Questions
 [Developer GitHub profile link](https://github.com/atifih)  
