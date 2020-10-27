@@ -24,16 +24,18 @@ The application may be invoked from the command line like so:
   
 ![](images/img1.png)
   
-The application begins by informing the user that they need to select an Engineering Team before they can view information in relation to them. The default selection of Manager is provided (for convenience).
+The application begins by informing the user that they will need to select an Engineering Team before they can view information in relation to them. The default selection of Manager is provided (for convenience).
  
 ![](images/img2.png)
   
 The user then proceeds by selecting a manager, engineer, intern or team complete (when they have finished with the team selection). This is also the menu they are redirected  to after a team member has been created/selected  or when the user deems the team to be complete. The application features user input validation via the usage of regular exprssions.
 
 ![](images/img5.png)
+
 Finally, the user informed of if a file has been successfully created (and it's location) or informed of an error message.
- cted 
+
 ![](images/img4.png)
+
  Rendering of the output HTML file.
 
 ## License
@@ -43,7 +45,7 @@ MIT.
 All pull requests are allowed/encouraged. For developers looking to make profound changes to this project, kindly open an issue detailing any proposed changes to be made so that a discussion may ensue.
  
 ## Tests
-Unit tests are provided and located in the test folder within the repository. The unit tests are invoked by: 
+Unit tests are provided and are located in the test folder within the repository. The unit tests are invoked by: 
 **npm run test**
 
 
