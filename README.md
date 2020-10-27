@@ -24,11 +24,11 @@ The application may be invoked from the command line like so:
   
 ![](images/img1.png)
   
-The application begins by informing the user that they need to select an Engineering Team before they can view information about them. 
+The application begins by informing the user that they need to select an Engineering Team before they can view information about them. The default selection o fManager is selected. 
  
 ![](images/img2.png)
   
-The user then proceeds by selecting a manager, engineer, intern or team complete (when they have finished with the team selection)
+The user then proceeds by selecting a manager, engineer, intern or team complete (when they have finished with the team selection. This is the menu they return to after they create/select an team member or when the user deems the team is complete.
 
 ![](images/img5.png)
 Finally, the user informed of if a file has been successfully created (and it's location).
