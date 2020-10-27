@@ -47,13 +47,13 @@ let teamComplete = false; // Track when the Engineering team has been fully spec
 
 function writeHTMLFile(){
   
-    // Write to  html file within the 'output' folder.
-
-      if (!fileExists){
-        fs.writeFileSync(outputPath, render(team), "utf-8"), (err) => (err) ? console.error(err) : console.log("The HTML output file: team.html has been written successfully to the 'output' folder");
-        }
-      return;  
-} 
+    // Write to  html file within theaa 'output' folder.
+    
+  fs.writeFile(outputPath, render(team), "utf-8", (err) => {
+  if (err) throw err;
+  console.log("The HTML output file: team.html has been written successfully to the 'output' folder");
+  });
+}   
 
  function createManager(){
   inquirer.prompt([
